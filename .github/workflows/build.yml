@@ -1,0 +1,33 @@
+name: Build Unity Android APK
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Unity
+        uses: game-ci/unity-builder@v2
+        with:
+          unityVersion: 2021.3.16f1
+          targetPlatform: Android
+
+      - name: Build project
+        uses: game-ci/unity-builder@v2
+        with:
+          targetPlatform: Android
+          buildName: build.apk
+          buildPath: build
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: AndroidAPK
+          path: build/build.apk
